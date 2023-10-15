@@ -24,5 +24,9 @@ hs_err_pid*
 
 .idea
 out
+*.iws
+*.iml
+*.ipr
 
 javafx-sdk-linux
+*.DS_Store
