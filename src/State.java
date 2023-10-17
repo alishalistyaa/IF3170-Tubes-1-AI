@@ -15,9 +15,9 @@ public class State {
                 if (buttons[i][j].getText().equals("")) {
                     mat[i][j] = 0;
                 } else if (buttons[i][j].getText().equals("X")) {
-                    mat[i][j] = isFirstPlayer ? 1 : -1;
+                    mat[i][j] = -1;
                 } else {
-                    mat[i][j] = isFirstPlayer ? -1 : 1;
+                    mat[i][j] = 1;
                 }
             }
         }
