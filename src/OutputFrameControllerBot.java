@@ -75,7 +75,6 @@ public class OutputFrameControllerBot {
         this.playerOName.setText(name2);
         this.roundsLeftLabel.setText(rounds);
         this.roundsLeft = Integer.parseInt(rounds);
-        this.isBotFirst = isBotFirst;
 
         // Start bot
         BotFactory factory = new BotFactory();
@@ -83,7 +82,7 @@ public class OutputFrameControllerBot {
         int OBotMode = 3;
         this.XBot = factory.createBot(XBotMode);
         this.OBot = factory.createBot(OBotMode);
-        this.playerXTurn = !isBotFirst;
+        this.playerXTurn = !this.isBotFirst;
     }
 
     /**
