@@ -77,7 +77,9 @@ public class OutputFrameController {
         this.isBotFirst = isBotFirst;
 
         // Start bot
-        this.bot = new SABot();
+        BotFactory factory = new BotFactory();
+        int mode = 2; // 0 SA, 1 GA, selain itu MMAB
+        this.bot = factory.createBot(mode);
         this.playerXTurn = !isBotFirst;
         if (this.isBotFirst) {
             this.moveBot();
