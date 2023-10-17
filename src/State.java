@@ -6,22 +6,21 @@ import java.util.List;
 
 public class State {
     private int[][] mat; // Matrix
-    private boolean isOpponentTurn;
+    private boolean isOpponentTurn = false;
 
-    public State(Button[][] buttons, boolean isOpponentTurn) {
+    public State (Button[][] buttons, boolean isFirstPlayer) {
         mat = new int[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (buttons[i][j].getText().equals("")) {
                     mat[i][j] = 0;
                 } else if (buttons[i][j].getText().equals("X")) {
-                    mat[i][j] = isOpponentTurn ? -1 : 1;
+                    mat[i][j] = isFirstPlayer ? 1 : -1;
                 } else {
-                    mat[i][j] = isOpponentTurn ? 1 : -1;
+                    mat[i][j] = isFirstPlayer ? -1 : 1;
                 }
             }
         }
-        this.isOpponentTurn = isOpponentTurn;
     }
 
     public State(State prev, Action act) {
@@ -63,7 +62,6 @@ public class State {
 
     public List<Action> getDefaultActions() {
         List<Action> actions = new ArrayList<>();
-        int idx = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8 ; j++) {
                 if (mat[i][j] == 0) {
