@@ -1,12 +1,23 @@
 import javafx.scene.control.Button;
 
 public class State {
-    private Button[][] buttons; // Matrix
+    private byte[][] mat; // Matrix
     private Bot bot; // Pelaku action terakhir pada state
     private int value; // value setelah action terakhir dilakukan
 
     public State(Button[][] buttons, Bot bot) {
-        this.buttons = buttons;
+        mat = new byte[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (buttons[i][j].getText().equals("")) {
+                    mat[i][j] = 0;
+                } else if (buttons[i][j].getText().equals("X")) {
+                    mat[i][j] = 1;
+                } else {
+                    mat[i][j] = 2;
+                }
+            }
+        }
         this.bot = bot;
         this.value = calcValue();
     }
