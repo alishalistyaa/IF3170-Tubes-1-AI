@@ -29,7 +29,29 @@ public class State {
                 .toArray(int[][]::new);
 
         // do action
-        this.mat[act.i][act.j] = prev.isOpponentTurn ? 2 : 1;
+        int a = prev.isOpponentTurn ? -1 : 1;
+        this.mat[act.i][act.j] = a;
+
+        // has left
+        if ((act.j - 1 >= 0) && (this.mat[act.i][act.j - 1] != 0)) {
+            this.mat[act.i][act.j - 1] = a;
+        }
+
+        // has right
+        if ((act.j + 1 <= 7) && (this.mat[act.i][act.j + 1] != 0)) {
+            this.mat[act.i][act.j + 1] = a;
+        }
+
+        // has top
+        if ((act.i - 1 >= 0) && (this.mat[act.i - 1][act.j] != 0)) {
+            this.mat[act.i - 1][act.j] = a;
+        }
+
+        // has bottom
+        if ((act.i + 1 <= 7) && (this.mat[act.i + 1][act.j] != 0)) {
+            this.mat[act.i + 1][act.j] = a;
+        }
+
         this.isOpponentTurn = !prev.isOpponentTurn;
     }
 
