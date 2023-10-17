@@ -1,6 +1,8 @@
 import javafx.scene.control.Button;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class State {
     private byte[][] mat; // Matrix
@@ -45,5 +47,29 @@ public class State {
 
     public int calcValue() {
         return calcValueBase();
+    }
+
+    public boolean isBoardFull() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8 ; j++) {
+                if (mat[i][j] == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public List<Action> getDefaultActions() {
+        List<Action> actions = new ArrayList<>();
+        int idx = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8 ; j++) {
+                if (mat[i][j] == 0) {
+                    actions.add(new Action(i, j));
+                }
+            }
+        }
+        return actions;
     }
 }
