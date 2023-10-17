@@ -1,5 +1,5 @@
 public class MMABBot extends Bot {
-    private final int maxTreeDepth = 1;
+    private final int maxTreeDepth = 3;
     public Action move(State s) {
         int currValue = Integer.MIN_VALUE;
         Action optimalAction = new Action(0,0);

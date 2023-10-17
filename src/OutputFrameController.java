@@ -77,14 +77,12 @@ public class OutputFrameController {
         this.isBotFirst = isBotFirst;
 
         // Start bot
-        this.bot = new MMABBot();
+        this.bot = new SABot();
         this.playerXTurn = !isBotFirst;
         if (this.isBotFirst) {
             this.moveBot();
         }
     }
-
-
 
     /**
      * Construct the 8x8 game board by creating a total of 64 buttons in a 2
