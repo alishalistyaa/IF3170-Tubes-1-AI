@@ -1,15 +1,14 @@
 public class MMABBot extends Bot {
-    private int maxTreeDepth;
-    public MMABBot(boolean isFirstTurn, int maxTreeDepth) {
-        super(isFirstTurn);
+    private final int maxTreeDepth = 1;
+    public MMABBot() {
     }
     public Action move(State s) {
         int currValue = Integer.MIN_VALUE;
         Action optimalAction = new Action(0,0);
 
         for (Action action : s.getDefaultActions()) {
-            State newState = new State(s, this, action);
-            int newValue = minValue(newState, Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
+            State newState = new State(s, action);
+            int newValue = minValue(newState, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
             if (newValue > currValue) {
                 currValue = newValue;
                 optimalAction = action;
@@ -24,7 +23,7 @@ public class MMABBot extends Bot {
         }
         int currValue = Integer.MAX_VALUE;
         for (Action action : s.getDefaultActions()) {
-            State newState = new State(s, this, action);
+            State newState = new State(s, action);
             int newValue = maxValue(newState, alpha, beta, currTreeDepth + 1);
             if (newValue < currValue) {
                 currValue = newValue;
@@ -43,7 +42,7 @@ public class MMABBot extends Bot {
         }
         int currValue = Integer.MIN_VALUE;
         for  (Action action : s.getDefaultActions()) {
-            State newState = new State(s, this, action);
+            State newState = new State(s, action);
             int newValue = minValue(newState, alpha, beta, currTreeDepth + 1);
             if (newValue > currValue) {
                 currValue = newValue;
