@@ -1,9 +1,10 @@
 import javafx.scene.control.Button;
 
+import java.util.Arrays;
+
 public class State {
     private byte[][] mat; // Matrix
     private Bot bot; // Pelaku action terakhir pada state
-    private int value; // value setelah action terakhir dilakukan
 
     public State(Button[][] buttons, Bot bot) {
         mat = new byte[8][8];
@@ -19,35 +20,30 @@ public class State {
             }
         }
         this.bot = bot;
-        this.value = calcValue();
     }
 
-    public State(Button[][] buttons, Bot bot, int value) {
-        this.buttons = buttons;
-        this.bot = bot;
-        this.value = value;
+    public State(State prev, Bot nextBot, Action act) {
+        this.mat = Arrays.stream(prev.mat)
+                .map(byte[]::clone)
+                .toArray(byte[][]::new);
+        // do action
+        this.mat[act.i][act.j] = nextBot.getMarkByte();
+        this.bot = nextBot;
     }
 
     private int calcValueBase() {
         int value = 0;
 
-        for (Button[] button : buttons) {
-            for (Button item : button) {
-                value += item.getText().equals(bot.getMark()) ? 1 : -1;
+        for (byte[] button : mat) {
+            for (byte item : button) {
+                value += item == bot.getMarkByte() ? 1 : -1;
             }
         }
 
         return value;
     }
 
-    private int calcValue() {
+    public int calcValue() {
         return calcValueBase();
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public State generateState(Action act, Bot actor) {
     }
 }
