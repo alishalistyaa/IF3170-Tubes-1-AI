@@ -79,7 +79,7 @@ public class InputFrameController{
             Parent root = loader.load();
 
             // Get controller of output frame and pass input including player names and number of rounds chosen.
-            OutputFrameController outputFC = loader.getController();
+            OutputFrameControllerBot outputFC = loader.getController();
             outputFC.getInput(this.player1.getText(), this.player2.getText(), this.numberOfRounds.getValue(), this.isBotFirst.isSelected());
 
             // Open the new frame.
