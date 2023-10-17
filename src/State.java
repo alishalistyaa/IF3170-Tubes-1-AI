@@ -5,40 +5,41 @@ import java.util.Arrays;
 import java.util.List;
 
 public class State {
-    private byte[][] mat; // Matrix
-    private Bot bot; // Pelaku action terakhir pada state
+    private int[][] mat; // Matrix
+    private boolean isOpponentTurn;
 
-    public State(Button[][] buttons, Bot bot) {
-        mat = new byte[8][8];
+    public State(Button[][] buttons, boolean isOpponentTurn) {
+        mat = new int[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (buttons[i][j].getText().equals("")) {
                     mat[i][j] = 0;
                 } else if (buttons[i][j].getText().equals("X")) {
-                    mat[i][j] = 1;
+                    mat[i][j] = isOpponentTurn ? -1 : 1;
                 } else {
-                    mat[i][j] = 2;
+                    mat[i][j] = isOpponentTurn ? 1 : -1;
                 }
             }
         }
-        this.bot = bot;
+        this.isOpponentTurn = isOpponentTurn;
     }
 
-    public State(State prev, Bot nextBot, Action act) {
+    public State(State prev, Action act) {
         this.mat = Arrays.stream(prev.mat)
-                .map(byte[]::clone)
-                .toArray(byte[][]::new);
+                .map(int[]::clone)
+                .toArray(int[][]::new);
+
         // do action
-        this.mat[act.i][act.j] = nextBot.getMarkByte();
-        this.bot = nextBot;
+        this.mat[act.i][act.j] = prev.isOpponentTurn ? 2 : 1;
+        this.isOpponentTurn = !prev.isOpponentTurn;
     }
 
     private int calcValueBase() {
         int value = 0;
 
-        for (byte[] button : mat) {
-            for (byte item : button) {
-                value += item == bot.getMarkByte() ? 1 : -1;
+        for (int[] button : mat) {
+            for (int item : button) {
+                value += item;
             }
         }
 
