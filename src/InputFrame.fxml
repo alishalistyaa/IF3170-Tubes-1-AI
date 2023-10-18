@@ -46,12 +46,12 @@
             </Label>
             <ComboBox fx:id="player2Type" GridPane.rowIndex="4" GridPane.columnIndex="1" maxWidth="Infinity" />
 
-            <Label text="Bot goes first: " GridPane.rowIndex="5" GridPane.columnIndex="0">
+            <Label text="Player O goes first: " GridPane.rowIndex="5" GridPane.columnIndex="0">
                 <font>
                     <Font name="Arial Bold" size="12"/>
                 </font>
             </Label>
-            <CheckBox fx:id="isBotFirst" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+            <CheckBox fx:id="isOFirst" GridPane.rowIndex="5" GridPane.columnIndex="1" />
         </GridPane>
     </top>
 

@@ -49,13 +49,15 @@ public class OutputFrameController {
     private int playerXScore;
     private int playerOScore;
     private int roundsLeft;
-    private boolean isBotFirst;
-    private Bot bot;
+    private boolean isOFirst;
+    private Bot XBot;
+    private Bot OBot;
 
 
     private static final int ROW = 8;
     private static final int COL = 8;
     private Button[][] buttons = new Button[ROW][COL];
+    private boolean isVsHuman;
 
 
     /**
@@ -66,23 +68,29 @@ public class OutputFrameController {
      * @param name1 Name of Player 1 (Player).
      * @param name2 Name of Player 2 (Bot).
      * @param rounds The number of rounds chosen to be played.
-     * @param isBotFirst True if bot is first, false otherwise.
+     * @param isOFirst True if bot is first, false otherwise.
      *
      */
-    void getInput(String name1, String name2, String rounds, boolean isBotFirst){
-        this.playerXName.setText(name1);
-        this.playerOName.setText(name2);
-        this.roundsLeftLabel.setText(rounds);
-        this.roundsLeft = Integer.parseInt(rounds);
-        this.isBotFirst = isBotFirst;
+    void getInput(String name1, String name2, String rounds, boolean isOFirst, String player1Type, String player2Type){
+        playerXName.setText(name1);
+        playerOName.setText(name2);
+        roundsLeftLabel.setText(rounds);
+        roundsLeft = Integer.parseInt(rounds);
 
-        // Start bot
         BotFactory factory = new BotFactory();
-        int mode = 1; // 0 SA, 1 GA, selain itu MMAB
-        this.bot = factory.createBot(mode);
-        this.playerXTurn = !isBotFirst;
-        if (this.isBotFirst) {
-            this.moveBot();
+        this.isOFirst = isOFirst;
+        playerXTurn = !isOFirst;
+
+        OBot = factory.createBot(player2Type);
+
+        if (player1Type.startsWith("H")) {
+            isVsHuman = true; // X human
+        } else {
+            XBot = factory.createBot(player1Type);
+        }
+
+        if (this.isOFirst) {
+            moveBot(OBot);
         }
     }
 
@@ -172,49 +180,81 @@ public class OutputFrameController {
      */
     private void selectedCoordinates(int i, int j){
         // Invalid when a button with an X or an O is clicked.
-        if (!this.buttons[i][j].getText().equals(""))
+        if (!buttons[i][j].getText().equals("") && isVsHuman)
             new Alert(Alert.AlertType.ERROR, "Invalid coordinates: Try again!").showAndWait();
         // Button must be blank.
         else {
-            if (this.playerXTurn) {
+            if (playerXTurn) {
                 // Changed background color to green to indicate next player's turn.
-                this.playerXBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
-                this.playerOBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
-                this.buttons[i][j].setText("X");  // Mark the board with X.
-                this.playerXScore++;              // Increment the score of player X.
+                playerXBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
+                playerOBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
 
-                // Update game board by changing surrounding cells to X if applicable.
-                this.updateGameBoard(i, j);
-                this.playerXTurn = false;         // Alternate player's turn.
+                if (isVsHuman) {
+                    buttons[i][j].setText("X");  // Mark the board with X.
+                    playerXScore++;              // Increment the score of player X.
 
-                if (isBotFirst) {
-                    this.roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have played.
-                    this.roundsLeftLabel.setText(String.valueOf(this.roundsLeft));
+                    // Update game board by changing surrounding cells to X if applicable.
+                    updateGameBoard(i, j);
+                    playerXTurn = false;         // Alternate player's turn.
+
+                    if (isOFirst) {
+                        roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have played.
+                        roundsLeftLabel.setText(String.valueOf(roundsLeft));
+
+                        if (roundsLeft == 0) {
+                            endOfGame();
+                        }
+                    }
+
+                    // Bot's turn
+                    moveBot(OBot);
+                } else {
+                    Action botMove = XBot.move(new State(buttons, isOFirst));
+                    i = botMove.i;
+                    j = botMove.j;
+
+                    if (!buttons[i][j].getText().equals("")) {
+                        new Alert(Alert.AlertType.ERROR, "Bot Invalid Coordinates. Exiting.").showAndWait();
+                        System.exit(1);
+                        return;
+                    }
+
+                    buttons[i][j].setText("X");  // Mark the board with X.
+                    playerXScore++;              // Increment the score of player X.
+
+                    // Update game board by changing surrounding cells to X if applicable.
+                    updateGameBoard(i, j);
+                    playerXTurn = false;         // Alternate player's turn.
+
+                    roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have played.
+                    roundsLeftLabel.setText(String.valueOf(roundsLeft));
+
+                    if (roundsLeft == 0) {
+                        endOfGame();
+                    }
+
+                    // Bot's turn
+                    moveBot(OBot);
                 }
-
-                if (isBotFirst && this.roundsLeft == 0) {
-                    this.endOfGame();
-                }
-
-                // Bot's turn
-                this.moveBot();
             }
             else {
-                this.playerXBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
-                this.playerOBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
-                this.buttons[i][j].setText("O");
-                this.playerOScore++;
+                playerXBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
+                playerOBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
+                buttons[i][j].setText("O");
+                playerOScore++;
 
-                this.updateGameBoard(i, j);
-                this.playerXTurn = true;
+                updateGameBoard(i, j);
+                playerXTurn = true;
 
-                if (!isBotFirst) {
-                    this.roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have played.
-                    this.roundsLeftLabel.setText(String.valueOf(this.roundsLeft));
-                }
+                if (isVsHuman) {
+                    if (!isOFirst) {
+                        roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have played.
+                        roundsLeftLabel.setText(String.valueOf(roundsLeft));
 
-                if (!isBotFirst && this.roundsLeft == 0) { // Game has terminated.
-                    this.endOfGame();       // Determine & announce the winner.
+                        if (roundsLeft == 0) { // Game has terminated.
+                            endOfGame();       // Determine & announce the winner.
+                        }
+                    }
                 }
             }
         }
@@ -270,13 +310,13 @@ public class OutputFrameController {
     }
 
     private void setPlayerScore(int i, int j){
-        if (this.playerXTurn) {
+        if (playerXTurn) {
             if (this.buttons[i][j].getText().equals("O")) {
                 this.buttons[i][j].setText("X");
                 this.playerXScore++;
                 this.playerOScore--;
             }
-        } else if (this.buttons[i][j].getText().equals("X")) {
+        } else if (buttons[i][j].getText().equals("X")) {
             this.buttons[i][j].setText("O");
             this.playerOScore++;
             this.playerXScore--;
@@ -291,7 +331,7 @@ public class OutputFrameController {
      */
     private void endOfGame(){
         // Player X is the winner.
-        if (this.playerXScore > this.playerOScore) {
+        if (playerXScore > playerOScore) {
             new Alert(Alert.AlertType.INFORMATION,
                     this.playerXName.getText() + " has won the game!").showAndWait();
             this.playerXBoxPane.setStyle("-fx-background-color: CYAN; -fx-border-color: #D3D3D3;");
@@ -300,9 +340,9 @@ public class OutputFrameController {
         }
 
         // Player O is the winner,
-        else if (this.playerOScore > this.playerXScore) {
+        else if (playerOScore > playerXScore) {
             new Alert(Alert.AlertType.INFORMATION,
-                    this.playerOName.getText() + " has won the game!").showAndWait();
+                    playerOName.getText() + " has won the game!").showAndWait();
             this.playerXBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
             this.playerOBoxPane.setStyle("-fx-background-color: CYAN; -fx-border-color: #D3D3D3;");
             this.playerOName.setText(this.playerOName.getText() + " (Winner!)");
@@ -353,17 +393,17 @@ public class OutputFrameController {
         primaryStage.show();
     }
 
-    private void moveBot() {
-        Action botMove = this.bot.move(new State(this.buttons, this.isBotFirst));
+    private void moveBot(Bot bot) {
+        Action botMove = bot.move(new State(buttons, isOFirst));
         int i = botMove.i;
         int j = botMove.j;
 
-        if (!this.buttons[i][j].getText().equals("")) {
+        if (!buttons[i][j].getText().equals("")) {
             new Alert(Alert.AlertType.ERROR, "Bot Invalid Coordinates. Exiting.").showAndWait();
             System.exit(1);
             return;
         }
 
-        this.selectedCoordinates(i, j);
+        selectedCoordinates(i, j);
     }
 }

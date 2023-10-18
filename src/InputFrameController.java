@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 public class InputFrameController{
 
-    public CheckBox isBotFirst;
+    public CheckBox isOFirst;
     @FXML
     private TextField player1;
 
@@ -97,8 +97,8 @@ public class InputFrameController{
             Parent root = loader.load();
 
             // Get controller of output frame and pass input including player names and number of rounds chosen.
-            OutputFrameControllerBot outputFC = loader.getController();
-            outputFC.getInput(player1.getText(), player2.getText(), numberOfRounds.getValue(), isBotFirst.isSelected());
+            OutputFrameController outputFC = loader.getController();
+            outputFC.getInput(player1.getText(), player2.getText(), numberOfRounds.getValue(), isOFirst.isSelected(), player1Type.getValue(), player2Type.getValue());
 
             // Open the new frame.
             Stage secondaryStage = new Stage();
