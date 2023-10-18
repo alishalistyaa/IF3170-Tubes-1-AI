@@ -78,8 +78,8 @@ public class OutputFrameControllerBot {
 
         // Start bot
         BotFactory factory = new BotFactory();
-        int XBotMode = 3; // 0 SA, 1 GA, selain itu MMAB
-        int OBotMode = 3;
+        int XBotMode = 0; // 0 SA, 1 GA, selain itu MMAB
+        int OBotMode = 0;
         this.XBot = factory.createBot(XBotMode);
         this.OBot = factory.createBot(OBotMode);
         this.playerXTurn = !this.isBotFirst;
