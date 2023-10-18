@@ -209,6 +209,7 @@ public class OutputFrameController {
 
                     if (roundsLeft == 0) {
                         endOfGame();
+                        return;
                     }
                 }
 
