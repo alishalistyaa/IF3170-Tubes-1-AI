@@ -206,7 +206,7 @@ public class OutputFrameController {
                     // Bot's turn
                     moveBot(OBot);
                 } else {
-                    Action botMove = XBot.move(new State(buttons, isOFirst));
+                    Action botMove = XBot.move(new State(buttons));
                     i = botMove.i;
                     j = botMove.j;
 
@@ -389,7 +389,7 @@ public class OutputFrameController {
     }
 
     private void moveBot(Bot bot) {
-        Action botMove = bot.move(new State(buttons, isOFirst));
+        Action botMove = bot.move(new State(buttons));
         int i = botMove.i;
         int j = botMove.j;
 
