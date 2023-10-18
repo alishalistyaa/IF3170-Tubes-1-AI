@@ -1,5 +1,5 @@
 public class SimulBot extends Bot {
-    private final int maxTreeDepth = 5;
+    private final int maxTreeDepth = 3;
 
     public Action move(State s) {
 //        [1, 6, 0, 1, 7]

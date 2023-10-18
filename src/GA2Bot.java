@@ -85,7 +85,7 @@ public class GA2Bot {
 
     public void run() {
         initiateWeightTable();
-        for (int i = 0; i < iteration; i++) {
+        for (int i = 0; i < iteration-1; i++) {
 //            System.out.println();
             choseWeight();
             crossOver();
@@ -94,6 +94,8 @@ public class GA2Bot {
             mutate();
             mutate();
         }
+        choseWeight();
+        crossOver();
         for (int i = 0; i < 4; i++) {
             System.out.println(Arrays.toString(weightTable[i]));
         }

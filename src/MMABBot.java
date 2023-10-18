@@ -1,5 +1,5 @@
 public class MMABBot extends Bot {
-    private int maxTreeDepth = 5;
+    private int maxTreeDepth = 3;
 
     public MMABBot() {
     }

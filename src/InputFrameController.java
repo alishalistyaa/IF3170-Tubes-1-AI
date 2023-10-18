@@ -55,12 +55,12 @@ public class InputFrameController {
         numberOfRounds.getSelectionModel().select(0);
 
         ObservableList<String> player1TypeDropdown = FXCollections.observableArrayList(
-                "", "Human", "Simulated Annealing Bot", "Genetic Algorithm Bot", "Minimax Bot");
+                "", "Human", "Simulated Annealing Bot", "Genetic Algorithm Bot 1", "Genetic Algorithm Bot 2", "Minimax Bot");
         player1Type.setItems(player1TypeDropdown);
         player1Type.getSelectionModel().select(0);
 
         ObservableList<String> player2TypeDropdown = FXCollections.observableArrayList(
-                "", "Simulated Annealing Bot", "Genetic Algorithm Bot", "Minimax Bot");
+                "", "Simulated Annealing Bot", "Genetic Algorithm Bot 1", "Genetic Algorithm Bot 2", "Minimax Bot");
         player2Type.setItems(player2TypeDropdown);
         player2Type.getSelectionModel().select(0);
     }
