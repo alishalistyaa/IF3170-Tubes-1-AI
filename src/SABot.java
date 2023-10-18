@@ -2,11 +2,11 @@ import java.util.List;
 import java.util.Random;
 
 public class SABot extends Bot {
-    private final int initTemp = 100;
-    private final int stopTemp = 0;
+    private final double initTemp = 2.8;
+    private final double stopTemp = 0;
 
-    private int schedule(int currTemp) {
-        return currTemp - 1;
+    private double schedule(double currTemp) {
+        return (currTemp - 0.2);
     }
 
     /** Pemilihan aksi random **/
@@ -25,7 +25,7 @@ public class SABot extends Bot {
         Action current = getRandomAction(s);
         State currentState = new State(s, current);
         int currStateValue = currentState.calcValue();
-        int currTemp = initTemp;
+        double currTemp = initTemp;
 
         while (System.currentTimeMillis() - startTime < maxDuration) {
 //            System.out.println(System.currentTimeMillis()- startTime);
@@ -42,7 +42,7 @@ public class SABot extends Bot {
             // Kalkulasi successor
             int delta =  nextState.calcValue() - currStateValue;
             System.out.println("delta " + delta);
-//
+
             double probability = new Random().nextDouble();
             double threshold = Math.exp((double) delta /currTemp);
             System.out.println("p = " + probability);
