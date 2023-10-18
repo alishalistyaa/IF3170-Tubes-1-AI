@@ -1,9 +1,11 @@
 public class BotFactory {
-    public Bot createBot(int mode) {
-        return switch (mode) {
-            case 0 -> new SABot();
-            case 1 -> new GABot();
-            default -> new MMABBot();
-        };
+    public Bot createBot(String mode) {
+        if (mode.startsWith("S")) {
+            return new SABot();
+        } else if (mode.startsWith("G")) {
+            return new GABot();
+        } else {
+            return new MMABBot();
+        }
     }
 }
