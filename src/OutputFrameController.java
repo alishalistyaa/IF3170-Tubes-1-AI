@@ -74,11 +74,9 @@ public class OutputFrameController {
         playerOName.setText(name2);
         roundsLeftLabel.setText(rounds);
         roundsLeft = Integer.parseInt(rounds);
+        this.isOFirst = isOFirst;
 
         BotFactory factory = new BotFactory();
-        this.isOFirst = isOFirst;
-        playerXTurn = !isOFirst;
-
         OBot = factory.createBot(player2Type);
 
         if (player1Type.startsWith("H")) {
@@ -87,6 +85,7 @@ public class OutputFrameController {
             XBot = factory.createBot(player1Type);
         }
 
+        playerXTurn = !isOFirst;
         if (this.isOFirst) {
             moveBot(OBot);
         }
@@ -185,27 +184,7 @@ public class OutputFrameController {
                 playerXBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
                 playerOBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
 
-                if (isVsHuman) {
-                    buttons[i][j].setText("X"); // Mark the board with X.
-                    playerXScore++; // Increment the score of player X.
-
-                    // Update game board by changing surrounding cells to X if applicable.
-                    updateGameBoard(i, j);
-                    playerXTurn = false; // Alternate player's turn.
-
-                    if (isOFirst) {
-                        roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have
-                                      // played.
-                        roundsLeftLabel.setText(String.valueOf(roundsLeft));
-
-                        if (roundsLeft == 0) {
-                            endOfGame();
-                        }
-                    }
-
-                    // Bot's turn
-                    moveBot(OBot);
-                } else {
+                if (!isVsHuman) {
                     Action botMove = XBot.move(new State(buttons));
                     i = botMove.i;
                     j = botMove.j;
@@ -215,25 +194,26 @@ public class OutputFrameController {
                         System.exit(1);
                         return;
                     }
+                }
 
-                    buttons[i][j].setText("X"); // Mark the board with X.
-                    playerXScore++; // Increment the score of player X.
+                buttons[i][j].setText("X"); // Mark the board with X.
+                playerXScore++; // Increment the score of player X.
 
-                    // Update game board by changing surrounding cells to X if applicable.
-                    updateGameBoard(i, j);
-                    playerXTurn = false; // Alternate player's turn.
+                // Update game board by changing surrounding cells to X if applicable.
+                updateGameBoard(i, j);
+                playerXTurn = false; // Alternate player's turn.
 
-                    roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have
-                                  // played.
+                if (isOFirst) {
+                    roundsLeft--;
                     roundsLeftLabel.setText(String.valueOf(roundsLeft));
 
                     if (roundsLeft == 0) {
                         endOfGame();
                     }
-
-                    // Bot's turn
-                    moveBot(OBot);
                 }
+
+                // Bot's turn
+                moveBot(OBot);
             } else {
                 playerXBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
                 playerOBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
@@ -243,15 +223,12 @@ public class OutputFrameController {
                 updateGameBoard(i, j);
                 playerXTurn = true;
 
-                if (isVsHuman) {
-                    if (!isOFirst) {
-                        roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have
-                                      // played.
-                        roundsLeftLabel.setText(String.valueOf(roundsLeft));
+                if (!isOFirst) {
+                    roundsLeft--;
+                    roundsLeftLabel.setText(String.valueOf(roundsLeft));
 
-                        if (roundsLeft == 0) { // Game has terminated.
-                            endOfGame(); // Determine & announce the winner.
-                        }
+                    if (roundsLeft == 0) {
+                        endOfGame();
                     }
                 }
             }
