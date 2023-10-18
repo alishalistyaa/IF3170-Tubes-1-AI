@@ -31,9 +31,11 @@ public class GABot extends Bot {
         else {
             //If both crossover are illegal move
             if (fitnessValue(x, s) > fitnessValue(y, s)){
+                // System.out.println(x.i + " " + x.j);
                 return (x);
             }
             else {
+                // System.out.println(y.i + " " + y.j);
                 return (y);
             }
         }
@@ -45,8 +47,8 @@ public class GABot extends Bot {
         List<Double> fitnessValue = new ArrayList<Double>();
         double totalFitnessValue = 0.0;
         double patokan = 0.0;
-        Action parent1 = new Action(1,1);
-        Action parent2 = new Action(1,1);
+        Action parent1 = getRandomAction(s);
+        Action parent2 = getRandomAction(s);
 
         for (int i = 0; i < NUM_PARENTS; i++) {
             Action newAction = getRandomAction(s);
