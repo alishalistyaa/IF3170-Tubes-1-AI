@@ -30,7 +30,7 @@ public class GABot extends Bot {
         }
         else {
             //If both crossover are illegal move
-            if (fitnessValue(x, s) > fitnessValue(x, s)){
+            if (fitnessValue(x, s) > fitnessValue(y, s)){
                 return (x);
             }
             else {
