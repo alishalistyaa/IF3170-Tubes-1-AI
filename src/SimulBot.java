@@ -1,13 +1,13 @@
-public class MMABBot extends Bot {
-    private int maxTreeDepth = 5;
+public class SimulBot extends Bot {
+    private final int maxTreeDepth = 5;
 
-    public MMABBot() {
-    }
-
-    public MMABBot(int maxTreeDepth) {
-        this.maxTreeDepth = maxTreeDepth;
-    }
     public Action move(State s) {
+//        [1, 6, 0, 1, 7]
+        s.noNeighbor = 1;
+        s.oneNeighbor = 6;
+        s.twoNeighbor = 0;
+        s.threeNeighbor = 1;
+        s.fourNeighbor = 7;
         int currValue = Integer.MIN_VALUE;
         Action optimalAction = new Action(0,0);
 
@@ -24,7 +24,7 @@ public class MMABBot extends Bot {
 
     public int minValue(State s, int alpha, int beta, int currTreeDepth) {
         if (currTreeDepth == maxTreeDepth || s.isBoardFull()) {
-            return s.calcValue();
+            return s.calcValueHeuristic();
         }
         int currValue = Integer.MAX_VALUE;
         for (Action action : s.getDefaultActions()) {
@@ -43,7 +43,7 @@ public class MMABBot extends Bot {
 
     public int maxValue(State s, int alpha, int beta, int currTreeDepth) {
         if (s.isBoardFull() || currTreeDepth == maxTreeDepth) {
-            return s.calcValue();
+            return s.calcValueHeuristic();
         }
         int currValue = Integer.MIN_VALUE;
         for  (Action action : s.getDefaultActions()) {

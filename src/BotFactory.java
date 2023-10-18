@@ -3,7 +3,7 @@ public class BotFactory {
         if (mode.startsWith("S")) {
             return new SABot();
         } else if (mode.startsWith("G")) {
-            return new GABot();
+            return new SimulBot();
         } else {
             return new MMABBot();
         }
