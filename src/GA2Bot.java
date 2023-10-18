@@ -21,7 +21,7 @@ public class GA2Bot {
         int[] fitness = new int[4];
         for (int i = 0; i < 4; i++) {
             fitness[i] = new Fitness(weightTable[i][0], weightTable[i][1], weightTable[i][2], weightTable[i][3], weightTable[i][4]).value();
-            System.out.println("Hasil " + i +" :" + fitness[i]);
+//            System.out.println("Hasil " + i +" :" + fitness[i]);
         }
         int[][] chosenWeight = new int[4][5];
         for (int i = 0; i < 4; i++) {
@@ -86,10 +86,7 @@ public class GA2Bot {
     public void run() {
         initiateWeightTable();
         for (int i = 0; i < iteration; i++) {
-            for (int l = 0; l < 4; l++) {
-                System.out.println(Arrays.toString(weightTable[l]));
-            }
-            System.out.println();
+//            System.out.println();
             choseWeight();
             crossOver();
             mutate();
@@ -100,7 +97,6 @@ public class GA2Bot {
         for (int i = 0; i < 4; i++) {
             System.out.println(Arrays.toString(weightTable[i]));
         }
-
     }
 
     public static void main(String[] args) {

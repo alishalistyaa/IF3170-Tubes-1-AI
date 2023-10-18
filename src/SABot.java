@@ -41,14 +41,14 @@ public class SABot extends Bot {
 
             // Kalkulasi successor
             int delta =  nextState.calcValue() - currStateValue;
-            System.out.println("delta " + delta);
+//            System.out.println("delta " + delta);
 
             double probability = new Random().nextDouble();
             double threshold = Math.exp((double) delta /currTemp);
-            System.out.println("p = " + probability);
-            System.out.println("t = " + threshold);
+//            System.out.println("p = " + probability);
+//            System.out.println("t = " + threshold);
             if( delta > 0 || ( delta < 0 && probability < threshold) ){
-                System.out.println("hitung");
+//                System.out.println("hitung");
                 return next;
             }
         }
